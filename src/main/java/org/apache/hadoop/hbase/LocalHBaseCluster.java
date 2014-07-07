@@ -138,8 +138,15 @@ public class LocalHBaseCluster {
     this.conf = conf;
     // Always have masters and regionservers come up on port '0' so we don't
     // clash over default ports.
-    conf.set(HConstants.MASTER_PORT, "0");
-    conf.set(HConstants.REGIONSERVER_PORT, "0");
+    // conf.set(HConstants.MASTER_PORT, "0");
+    // conf.set(HConstants.REGIONSERVER_PORT, "0");
+
+    //Leave the master and regionserver ports alone if they're already set
+    if (conf.get(HConstants.MASTER_PORT) == null)
+      conf.set(HConstants.MASTER_PORT, "0");
+    if (conf.get(HConstants.REGIONSERVER_PORT) == null)
+      conf.set(HConstants.REGIONSERVER_PORT, "0");
+
     this.masterClass = (Class<? extends HMaster>)
       conf.getClass(HConstants.MASTER_IMPL, masterClass);
     // Start the HMasters.
